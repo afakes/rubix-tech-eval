@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <title>RUBIX: Bakery Tech Evaluation </title>
+    <script language="JavaScript" src="productData.js"></script>
+    <script language="JavaScript" src="payloads.js"></script>
+    <script language="JavaScript" src="Bakery.class.js"></script>
+
+    <script>
+        function pageStart() {
+			let B = new Bakery(name, product);
+
+			let input = payloads.standard.stream;
+			let result = B.main(input);
+
+			document.getElementById('input').innerText = JSON.stringify(input, null, 2);
+
+			// visualise results
+			document.getElementById('output').innerText = JSON.stringify(result.payload, null, 2);
+
+			document.getElementById('error').innerHTML = "<ul>";
+			for (let error of result.error) {
+				document.getElementById('error').innerHTML += `<li>${error.message}</li>\n`;
+            }
+			document.getElementById('error').innerHTML += "</ul>";
+
+        }
+
+    </script>
+
+
+</head>
+<body onload="pageStart()">
+    <h1>INPUT</h1>
+    <pre id="input"></pre>
+    <h1>OUTPUT</h1>
+    <pre id="output"></pre>
+    <h1>ERRORS</h1>
+    <div id="error" style="color: red;"></div>
+
+
+</body>
+
+</html>
