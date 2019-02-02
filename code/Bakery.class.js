@@ -3,36 +3,39 @@
  * This is a component of the solution the the Bakery Packing problem
  *
  */
-class Bakery {
+class Bakery extends base {
 
 	constructor(name = {}, product = {}) {
-		this.internalProperties = {};
+		super();
 		this.name = name;
 		this.product = product;
 	}
 
 	/**
 	 * @param {string[]} inputStream - newline separated items or array
-	 * @return {{data: Array, errors: Array}}
+	 * @return {Boolean}
 	 */
 	main(inputStream = []) {
 
+		this.inputStream = inputStream;
+		this.error = [];
+		this.payload = [];
+
 		if (typeof inputStream === "string") { inputStream = inputStream.split("\n"); }
-
-		let result = { "payload": [], "error": [] };
-
 		if (!Array.isArray(inputStream)) {
-			result.error.push(new Error(`input stream invalid`)); return result;
+			this.error.push(new Error(`input stream invalid`)); return false;
 		}
 
 		for (let inputLine of inputStream) {
 			let itemResult = this.processItem(inputLine);
 			if (itemResult == null) {continue; }
-			if (itemResult.error !== null) { result.error.push(itemResult.error); }
-			if (itemResult.payload !== null) { result.payload.push(itemResult.payload); }
+			if (itemResult.error !== null) { this.error.push(itemResult.error); }
+			if (itemResult.payload !== null) {
+				this.payload.push(itemResult.payload);
+			}
 		}
 
-		return result;
+		return (this.error.length === 0);
 	}
 
 	/**
@@ -42,28 +45,29 @@ class Bakery {
 	 */
 	processItem(srcItem) {
 
+		// validate input
 		let item = this.validateItem(srcItem);
 		if (item == null) { return null; }
 		if ((item.name || "") === "Error") { return {"payload": null, "error": item}; }
 
 		// construct result packet
 		let result = {
-			"originalItem": srcItem,
-			"name": this.name[item.code],
-			"code": item.code,
-			"requestedCount": parseInt(item.numberOfItems),
-			"canBePacked": false,
-			"totalCost": 0.0,
-			"breakdown": []
+			"originalItem":  srcItem,
+			"name":          this.name[item.code],
+			"code":          item.code,
+			"numberOfItems": parseInt(item.numberOfItems),
+			"canBePacked":   false,
+			"totalCost":     0.0,
+			"breakdown":     []
 		};
 
 		// pack sizes greater than the item.numberOfItems will not lead to a solution, convert to integer, and sort descending
 		let packSizes = Object.keys(this.product[item.code])
-			.filter(packSize => { return parseInt(packSize) <= item.numberOfItems })
 			.map(packSize => { return parseInt(packSize) })
+			.filter(packSize => { return packSize <= item.numberOfItems })
 			.sort( (a, b) => { return b-a });
 
-		let calc = this.calc(item.code, item.numberOfItems, packSizes, result.breakdown);
+		let calc = this.calc(item.code, item.numberOfItems, packSizes, result.breakdown); // find the solution
 		result.canBePacked = calc.status;
 
 		if (result.canBePacked) {
@@ -78,14 +82,14 @@ class Bakery {
 	}
 
 	/**
-	 * Recursive function to pack organisation for the requested number of Items
+	 * Recursive function for pack organisation for the requested number of Items
 	 * @param {string} code
 	 * @param {number} numberOfItems
 	 * @param {number[]} packSizes
 	 * @param {{}[]} results
 	 * @return {{}}
 	 */
-	calc(code, numberOfItems, packSizes, results = []) {
+	calc(code = null, numberOfItems = null, packSizes = [], results = []) {
 
 		for (let packSize of packSizes) {
 
@@ -95,7 +99,8 @@ class Bakery {
 			let ret = { "status": true, "count": wholePacks, "packSize": packSize };
 			if (remainder === 0) { results.push(ret); return ret; } // if we have a remainder of zero that means the pack size is a multiple of numberOfItems
 
-			// the remainder becomes the new requestedCount, and we need to create a new  packSizes array where the only sizes we want those equal to or less than remainder
+			// the remainder becomes the new numberOfItems, a new packSizes array where the
+			// only sizes are those equal to or less than remainder
 			let newPackSizes = packSizes.filter( packSize => { return packSize <= remainder; } );
 
 			let subValue = this.calc(code, remainder, newPackSizes, results); // --->> recursive call <<----
@@ -104,71 +109,55 @@ class Bakery {
 			}
 		}
 
-		return { "status": false};
+		return { "status": false}; // looped through all pack sizes and could not find a whole number solution
 	}
 
 	/**
 	 *
-	 * @param {string} srcItem
+	 * @param {string} input
 	 * @return {{} | Error | null}
 	 */
-	validateItem(srcItem) {
+	validateItem(input = null) {
 
-		srcItem = srcItem.trim(); // clean + sanitize string
-		if (srcItem === "") {
+		if (input === null) {
+			return null;
+		}
+
+		input = input.trim(); // clean + sanitize string
+		if (input === "") {
 			return null; // we don't care about empty lines ? maybe we doo and we should return line number?
 		}
 
 		// validate input
-		if (srcItem.indexOf(" ") === -1) {
-			return new Error(`E001,invalid item line: ${srcItem}`);
+		if (input.indexOf(" ") === -1) {
+			return new Error(`E001,invalid item line: ${input}`);
 		}
 
 		// extract requestCount code
-		let [numberOfItems, code] = srcItem.split(" ");
+		let [numberOfItems, code] = input.split(" ");
 		if (numberOfItems == null || code == null) {
-			return new Error(`E002,input string is invalid: ${srcItem}`);
+			return new Error(`E002,input string is invalid: ${input}`);
 		}
 		code = code.trim();
 
 		// get handle to product pack info
 		if (!(code in this.product)) {
-			return new Error(`E003,Unable to find product pack info for productCode:${code}, original: ${srcItem}`);
+			return new Error(`E003,Unable to find product pack info for productCode:${code}, original: ${input}`);
 		}
 
 		if (!(code in this.name)) {
-			return new Error(`E004,Unable to find product name for productCode:${code}, original: ${srcItem}`);
+			return new Error(`E004,Unable to find product name for productCode:${code}, original: ${input}`);
 		}
 
 		numberOfItems = parseInt(numberOfItems);
 		if (isNaN(numberOfItems)) {
-			return new Error(`E005,invalid number of items for productCode:${code}, original: ${srcItem}`);
+			return new Error(`E005,invalid number of items for productCode:${code}, original: ${input}`);
 		}
 
 		return {"code": code, "numberOfItems": numberOfItems}
 	}
 
 
-	// here I have created my own getters and setters accessors, to mimic public and private properties, as ES6 does not support it.
-	/**
-	 * get a property
-	 * @param {string} name
-	 * @param {*} defaultValue
-	 * @returns {*}
-	 */
-	getProperty(name, defaultValue = null) {
-		return (name in this.internalProperties) ? this.internalProperties[name] : defaultValue;
-	}
-
-	/**
-	 * Set a Property value
-	 * @param {string} name
-	 * @param {*} value
-	 * @returns {string}
-	 */
-	setProperty(name, value = null) {
-		this.internalProperties[name] = value;
-	}
 
 
 	/** @returns {{}} */
@@ -191,13 +180,35 @@ class Bakery {
 		this.setProperty('product', value);
 	}
 
-}
 
+	/** @returns {[]{}} */
+	get payload() {
+	    return this.getProperty('payload', []);
+	}
+	
+	/** @param {[]{}} value */
+	set payload(value) {
+	    this.setProperty('payload', value);
+	}
 
-class BakeryView {
+	/** @returns {Error[]} */
+	get error() {
+	    return this.getProperty('error', []);
+	}
 
-	constructor( ) {
+	/** @param {Error[]} value */
+	set error(value) {
+	    this.setProperty('error', value);
+	}
 
+	/** @returns {string[] | string} */
+	get inputStream() {
+	    return this.getProperty('inputStream', false);
+	}
+
+	/** @param {string[] | string} value */
+	set inputStream(value) {
+	    this.setProperty('inputStream', value);
 	}
 
 }

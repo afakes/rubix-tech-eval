@@ -2,43 +2,52 @@
 
 <head>
     <title>RUBIX: Bakery Tech Evaluation </title>
+    <script language="JavaScript" src="base.class.js"></script>
     <script language="JavaScript" src="productData.js"></script>
     <script language="JavaScript" src="payloads.js"></script>
+    <script language="JavaScript" src="BakeryView.class.js"></script>
     <script language="JavaScript" src="Bakery.class.js"></script>
+
+    <style>
+        h1.error {
+            color: red;
+        }
+        #error {
+            color: red;
+        }
+
+        h1.input {
+            color: green;
+        }
+        #input {
+            color: green;
+        }
+
+        h1.output {
+            color: darkblue;
+        }
+        #output {
+            color: darkblue;
+        }
+
+    </style>
 
     <script>
         function pageStart() {
 			let B = new Bakery(name, product);
+			B.main(payloads.standard.stream);
 
-			let input = payloads.standard.stream;
-			let result = B.main(input);
-
-			document.getElementById('input').innerText = JSON.stringify(input, null, 2);
-
-			// visualise results
-			document.getElementById('output').innerText = JSON.stringify(result.payload, null, 2);
-
-			document.getElementById('error').innerHTML = "<ul>";
-			for (let error of result.error) {
-				document.getElementById('error').innerHTML += `<li>${error.message}</li>\n`;
-            }
-			document.getElementById('error').innerHTML += "</ul>";
-
+			let view = new BakeryView(B);
+			view.configureElements("input", "output", "error");
+            view.render();
         }
-
     </script>
-
 
 </head>
 <body onload="pageStart()">
-    <h1>INPUT</h1>
-    <pre id="input"></pre>
-    <h1>OUTPUT</h1>
-    <pre id="output"></pre>
-    <h1>ERRORS</h1>
-    <div id="error" style="color: red;"></div>
-
-
+    <h1 class="input">INPUT</h1> <pre id="input"></pre>
+    <h1 class="output">OUTPUT</h1> <div id="output"></div>
+    <h1 class="error">ERRORS</h1> <div id="error"></div>
 </body>
 
 </html>
