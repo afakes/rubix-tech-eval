@@ -1,3 +1,11 @@
+/**
+ * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
+ * This is a component of the solution the the Bakery Packing problem
+ *
+ * data sets used to test the system
+ *
+ */
+
 
 let name = {
 	"VS5":  "Vegemite Scroll",
@@ -8,14 +16,26 @@ let name = {
 /**
  *
  * Schema
-  	"code": {
-		"packSize": n.nn ,
-		"packSize": n.nn ,
+  	"string": {
+		"integer": decimal d.dd ,
+		"integer": decimal d.dd ,
 		...
 	},
- 	"code": {...},
- 	"code": {...},
+ 	"string": {...},
+ 	"string": {...},
  	...
+
+	 * Schema description
+	 "code - product identifier (string)": {
+			"pack size identifier (integer)": pack cost - decimal d.dd ,
+			"pack size identifier (integer)": pack cost - decimal d.dd ,
+			...
+		},
+	 "code": {...},
+	 "code": {...},
+	 ...
+
+
  */
 
 let product = {

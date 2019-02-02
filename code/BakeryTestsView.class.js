@@ -2,7 +2,7 @@
  * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
  * Bakery Packing problem component
  */
-class BakeryView  extends base {
+class BakeryTestsView extends base {
 
 	/**
 	 * @param {Bakery} src
@@ -33,10 +33,8 @@ class BakeryView  extends base {
 	// ui element ID's
 
 	/** @returns {{}} */
-	configureElements(input = null, output = null, error = null) {
-		if (input  != null) { this.elements.input  = document.getElementById(input);  }
+	configureElements(output = null) {
 		if (output != null) { this.elements.output = document.getElementById(output); }
-		if (error  != null) { this.elements.error  = document.getElementById(error);  }
 	}
 
 	render() {
@@ -122,4 +120,9 @@ class BakeryView  extends base {
 	}
 
 }
+
+Error.prototype.toString = function() {
+	return this.message;
+}
+
 

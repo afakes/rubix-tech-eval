@@ -1,3 +1,8 @@
+/**
+ * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
+ * This is a component of the solution the the Bakery Packing problem
+ *
+ */
 class base {
 
 	constructor() {
