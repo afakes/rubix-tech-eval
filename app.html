@@ -1,0 +1,685 @@
+<html>
+<head>
+    <title>RUBIX: Bakery Tech Evaluation - Tests </title>
+    <script language="JavaScript" >
+        class base {
+
+			constructor() {
+				this.internalProperties = {};
+			}
+
+			// here I have created my own getters and setters accessors, to mimic public and private properties, as ES6 does not support it.
+			/**
+			 * get a property
+			 * @param {string} name
+			 * @param {*} defaultValue
+			 * @returns {*}
+			 */
+			getProperty(name, defaultValue = null) {
+				return (name in this.internalProperties) ? this.internalProperties[name] : defaultValue;
+			}
+
+			/**
+			 * Set a Property value
+			 * @param {string} name
+			 * @param {*} value
+			 * @returns {string}
+			 */
+			setProperty(name, value = null) {
+				this.internalProperties[name] = value;
+			}
+
+			// template for getter and setter
+			/** @returns {} */
+			get description() {
+				return this.getProperty('description', false);
+			}
+
+			/** @param {} value */
+			set description(value) {
+				this.setProperty('description', value);
+			}
+
+		}
+    </script>
+    <script language="JavaScript" >
+		let name = {
+			"VS5":  "Vegemite Scroll",
+			"MB11": "Blueberry Muffin",
+			"CF":   "Croissant"
+		};
+
+		let product = {
+			"VS5":  {
+				"3": 6.99,
+				"5": 8.99
+			},
+			"MB11": {
+				"2": 9.95,
+				"5": 16.95,
+				"8": 24.95
+			},
+			"CF":   {
+				"3": 5.95,
+				"5": 9.95,
+				"9": 16.99
+			}
+		};
+    </script>
+    <script language="JavaScript" >
+		let payloads = {
+			"standard": {
+				"description": "working solution - array",
+				"stream": [
+					"10 VS5",
+					"14 MB11",
+					"13 CF"
+				],
+				"expected": {
+					"payload": `[{"originalItem":"10 VS5","name":"Vegemite Scroll","code":"VS5","numberOfItems":10,"canBePacked":true,"totalCost":17.98,"breakdown":[{"status":true,"count":2,"packSize":5,"packCost":8.99,"lineItemCost":17.98}]},{"originalItem":"14 MB11","name":"Blueberry Muffin","code":"MB11","numberOfItems":14,"canBePacked":true,"totalCost":54.8,"breakdown":[{"status":true,"count":3,"packSize":2,"packCost":9.95,"lineItemCost":29.849999999999998},{"status":true,"count":1,"packSize":8,"packCost":24.95,"lineItemCost":24.95}]},{"originalItem":"13 CF","name":"Croissant","code":"CF","numberOfItems":13,"canBePacked":true,"totalCost":25.849999999999998,"breakdown":[{"status":true,"count":1,"packSize":3,"packCost":5.95,"lineItemCost":5.95},{"status":true,"count":2,"packSize":5,"packCost":9.95,"lineItemCost":19.9}]}]`,
+					"error": `[]`
+				}
+			},
+			"string": {
+				"description": "working solution - string",
+				"stream": `
+		10 VS5
+		14 MB11
+		13 CF
+		`,
+				"expected": {
+					"payload": `[{"originalItem":"\\t\\t10 VS5","name":"Vegemite Scroll","code":"VS5","numberOfItems":10,"canBePacked":true,"totalCost":17.98,"breakdown":[{"status":true,"count":2,"packSize":5,"packCost":8.99,"lineItemCost":17.98}]},{"originalItem":"\\t\\t14 MB11","name":"Blueberry Muffin","code":"MB11","numberOfItems":14,"canBePacked":true,"totalCost":54.8,"breakdown":[{"status":true,"count":3,"packSize":2,"packCost":9.95,"lineItemCost":29.849999999999998},{"status":true,"count":1,"packSize":8,"packCost":24.95,"lineItemCost":24.95}]},{"originalItem":"\\t\\t13 CF","name":"Croissant","code":"CF","numberOfItems":13,"canBePacked":true,"totalCost":25.849999999999998,"breakdown":[{"status":true,"count":1,"packSize":3,"packCost":5.95,"lineItemCost":5.95},{"status":true,"count":2,"packSize":5,"packCost":9.95,"lineItemCost":19.9}]}]`,
+					"error": `[]`
+				}
+			},
+			"number": {
+				"description": "invalid input - number",
+				"stream": 1234,
+				"expected": {
+					"payload": `[]`,
+					"error": `[{}]`
+				}
+			},
+			"random": {
+				"description": "random working and invalid",
+				"stream": [
+					"",
+					"XXX",
+					"XXX YYY",
+					"10 YYY",
+					"ZZ VS5",
+					"10 VS5",
+					"14 MB11",
+					"13 CF",
+					"1 CF",
+					"7 CF"
+				],
+				"expected": {
+					"payload": `[{"originalItem":"10 VS5","name":"Vegemite Scroll","code":"VS5","numberOfItems":10,"canBePacked":true,"totalCost":17.98,"breakdown":[{"status":true,"count":2,"packSize":5,"packCost":8.99,"lineItemCost":17.98}]},{"originalItem":"14 MB11","name":"Blueberry Muffin","code":"MB11","numberOfItems":14,"canBePacked":true,"totalCost":54.8,"breakdown":[{"status":true,"count":3,"packSize":2,"packCost":9.95,"lineItemCost":29.849999999999998},{"status":true,"count":1,"packSize":8,"packCost":24.95,"lineItemCost":24.95}]},{"originalItem":"13 CF","name":"Croissant","code":"CF","numberOfItems":13,"canBePacked":true,"totalCost":25.849999999999998,"breakdown":[{"status":true,"count":1,"packSize":3,"packCost":5.95,"lineItemCost":5.95},{"status":true,"count":2,"packSize":5,"packCost":9.95,"lineItemCost":19.9}]},{"originalItem":"1 CF","name":"Croissant","code":"CF","numberOfItems":1,"canBePacked":false,"totalCost":0,"breakdown":[]},{"originalItem":"7 CF","name":"Croissant","code":"CF","numberOfItems":7,"canBePacked":false,"totalCost":0,"breakdown":[]}]`,
+					"error": `[{},{},{},{}]`
+				}
+			},
+			"emptyArray": {
+				"description": "empty array",
+				"stream": [],
+				"expected": {
+					"payload": `[]`,
+					"error": `[]`
+				}
+			},
+			"null": {
+				"description": "null input",
+				"stream": null,
+				"expected": {
+					"payload": `[]`,
+					"error": `[{}]`
+				}
+			},
+			"emptyString": {
+				"description": "empty string",
+				"stream": "",
+				"expected": {
+					"payload": `[]`,
+					"error": `[{}]`
+				}
+			}
+
+		};
+
+    </script>
+    <script language="JavaScript" >
+
+		/**
+		 * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
+		 * Bakery Packing problem component
+		 */
+		class BakeryTestsView extends base {
+
+			/**
+			 * @param {Bakery} src
+			 */
+			constructor(src) {
+				super();
+				this.src = src;
+
+				this.elements = {
+					"output": null,
+				};
+
+			}
+
+			/** @returns {Bakery} */
+			get src() {
+
+				return this.getProperty('src', null);
+			}
+
+			/** @param {Bakery} value */
+			set src(value) {
+				this.setProperty('src', value);
+			}
+
+			// ui element ID's
+
+			/** @returns {{}} */
+			configureElements(output = null) {
+				if (output != null) { this.elements.output = document.getElementById(output); }
+			}
+
+			render() {
+				if (this.src == null) { return; }
+
+				//console.log("this.config = ",this.config);
+
+				let testResult = {
+					"status":          "FAIL",
+					"name":            this.config.description || "",
+					"type":            typeof this.config.stream,
+					"length":          JSON.stringify(this.config.stream).length,
+					"actualPayload":   JSON.stringify(this.src.payload),
+					"actualError":     JSON.stringify(this.src.error),
+					"expectedPayload": this.config.expected.payload,
+					"expectedError":   this.config.expected.error
+				};
+
+				//
+				if (testResult.expectedPayload === testResult.actualPayload && testResult.expectedError === testResult.actualError) {
+					testResult.status = "PASS";
+				}
+
+				this.output(`
+            <tr>
+                <td valign="middle">${testResult.status}</td>
+                <td valign="top">${testResult.name}</td>
+                <td valign="top">${testResult.type} [${testResult.length}] </td>
+            </tr>
+		`);
+
+			}
+
+			output(str) {
+				this.elements.output.innerHTML += str;
+			}
+
+			/** @returns {{}} */
+			get elements() {
+				return this.getProperty('elements', {"input": null, "output": null, "error": null });
+			}
+
+			/** @param {{}} value */
+			set elements(value) {
+				this.setProperty('elements', value);
+			}
+
+
+			/** @returns {{}} */
+			get config() {
+				return this.getProperty('config', {});
+			}
+
+			/** @param {{}} value */
+			set config(value) {
+				this.setProperty('config', value);
+			}
+
+		}
+
+
+
+
+
+    </script>
+    <script language="JavaScript" >
+		/**
+		 * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
+		 * Bakery Packing problem component
+		 */
+		class BakeryView  extends base {
+
+			/**
+			 * @param {Bakery} src
+			 */
+			constructor(src) {
+				super();
+				this.src = src;
+
+				this.elements = {
+					"input": null,
+					"output": null,
+					"error": null
+				};
+
+			}
+
+			/** @returns {Bakery} */
+			get src() {
+
+				return this.getProperty('src', null);
+			}
+
+			/** @param {Bakery} value */
+			set src(value) {
+				this.setProperty('src', value);
+			}
+
+			// ui element ID's
+
+			/** @returns {{}} */
+			configureElements(input = null, output = null, error = null) {
+				if (input  != null) { this.elements.input  = document.getElementById(input);  }
+				if (output != null) { this.elements.output = document.getElementById(output); }
+				if (error  != null) { this.elements.error  = document.getElementById(error);  }
+			}
+
+			render() {
+				if (this.src == null) { return; }
+
+				this.input();
+				this.payload();
+				this.error();
+
+			}
+
+			input() {
+				if (this.elements.input === null) { return; }
+				this.elements.input.innerText = JSON.stringify(this.src.inputStream || "" , null, 2);
+			}
+
+			/**
+			 * Render the payload of the Bakery Object
+			 */
+			payload() {
+				if (this.elements.output === null) { return; }
+
+				for (let outputs of this.src.payload || [] ) {
+					this.elements.output.appendChild(this.toHTML(this.formatLineItem(outputs)));
+				}
+			}
+
+			/**
+			 * configured formatter
+			 * @return {Intl.NumberFormat}
+			 */
+			get numberFormatter() {
+				return new Intl.NumberFormat('en-AU', { style: 'decimal', minimumFractionDigits: 2});
+			}
+
+			/**
+			 * for mat line-item for output
+			 * @param {{}} singlePayload
+			 * @return {DocumentFragment}
+			 */
+			formatLineItem(singlePayload) {
+
+				let formatter = this.numberFormatter;
+
+				let str;
+
+				let lineItems = singlePayload.breakdown || [];
+				if (lineItems.length === 0) {
+					str = `Unable to find a solution for product ${singlePayload.code} with ${singlePayload.numberOfItems} items, using current product pack sizes`;
+				} else {
+					// add single payload header, i.e. the line item
+					str = `${singlePayload.numberOfItems}&nbsp;${singlePayload.code}&nbsp;$${formatter.format(singlePayload.totalCost)}`;
+
+					for (let subItem of lineItems) {
+						str += `\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${subItem.count}&nbsp;x&nbsp;${subItem.packSize}&nbsp;$${formatter.format(subItem.packCost)}`;
+					}
+				}
+
+				return `<pre>${str}</pre>`;
+
+
+
+			}
+
+			error() {
+				if (this.elements.error === null) { return; }
+
+				let str = `<ul>`;
+				for (let error of this.src.error || []) { str += `<li>${error.message || ""}</li>\n`; }
+				str += `<ul>`;
+
+				this.elements.error.appendChild(this.toHTML(str));
+			}
+
+
+
+			/**
+			 * convert string into HTML appendable object (HTML Fragment)
+			 * @param {string} string
+			 * @return {DocumentFragment}
+			 */
+			toHTML(string = "") {
+				return document.createRange().createContextualFragment(string);
+			}
+
+			/** @returns {{}} */
+			get elements() {
+				return this.getProperty('elements', {"input": null, "output": null, "error": null });
+			}
+
+			/** @param {{}} value */
+			set elements(value) {
+				this.setProperty('elements', value);
+			}
+
+		}
+
+
+    </script>
+    <script language="JavaScript" >
+		/**
+		 * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
+		 * Bakery Packing problem component
+		 */
+		class Bakery extends base {
+
+			constructor(name = {}, product = {}) {
+				super();
+				this.name = name;
+				this.product = product;
+			}
+
+			/**
+			 * @param {string[]} inputStream - newline separated items or array
+			 * @return {Boolean}
+			 */
+			main(inputStream = []) {
+
+				this.inputStream = inputStream;
+				this.error = [];
+				this.payload = [];
+
+				if (typeof inputStream === "string") { inputStream = inputStream.split("\n"); }
+				if (!Array.isArray(inputStream)) {
+					this.error.push(new Error(`input stream invalid`)); return false;
+				}
+
+				for (let inputLine of inputStream) {
+					let itemResult = this.processItem(inputLine);
+					if (itemResult == null) {continue; }
+					if (itemResult.error !== null) { this.error.push(itemResult.error); }
+					if (itemResult.payload !== null) {
+						this.payload.push(itemResult.payload);
+					}
+				}
+
+				return (this.error.length === 0);
+			}
+
+			/**
+			 *
+			 * @param {string} srcItem -
+			 * @return {{}}
+			 */
+			processItem(srcItem) {
+
+				// validate input
+				let item = this.validateItem(srcItem);
+				if (item == null) { return null; }
+				if ((item.name || "") === "Error") { return {"payload": null, "error": item}; }
+
+				// construct result packet
+				let result = {
+					"originalItem":  srcItem,
+					"name":          this.name[item.code],
+					"code":          item.code,
+					"numberOfItems": parseInt(item.numberOfItems),
+					"canBePacked":   false,
+					"totalCost":     0.0,
+					"breakdown":     []
+				};
+
+				// pack sizes greater than the item.numberOfItems will not lead to a solution, convert to integer, and sort descending
+				let packSizes = Object.keys(this.product[item.code])
+				.map(packSize => { return parseInt(packSize) })
+				.filter(packSize => { return packSize <= item.numberOfItems })
+				.sort( (a, b) => { return b-a });
+
+				let calc = this.calc(item.code, item.numberOfItems, packSizes, result.breakdown); // find the solution
+				result.canBePacked = calc.status;
+
+				if (result.canBePacked) {
+					for ( let lineItemObject of result.breakdown ) {
+						lineItemObject.packCost = this.product[item.code][lineItemObject.packSize];
+						lineItemObject.lineItemCost = (lineItemObject.packCost * lineItemObject.count);
+						result.totalCost += lineItemObject.lineItemCost;
+					}
+				}
+
+				return {"payload": result, "error": null};
+			}
+
+			/**
+			 * Recursive function for pack organisation for the requested number of Items
+			 * @param {string} code
+			 * @param {number} numberOfItems
+			 * @param {number[]} packSizes
+			 * @param {{}[]} results
+			 * @return {{}}
+			 */
+			calc(code = null, numberOfItems = null, packSizes = [], results = []) {
+
+				for (let packSize of packSizes) {
+
+					let wholePacks = Math.floor(numberOfItems / packSize);  // do the division and remainder
+					let remainder = numberOfItems % packSize;
+
+					let ret = { "status": true, "count": wholePacks, "packSize": packSize };
+					if (remainder === 0) { results.push(ret); return ret; } // if we have a remainder of zero that means the pack size is a multiple of numberOfItems
+
+					// the remainder becomes the new numberOfItems, a new packSizes array where the
+					// only sizes are those equal to or less than remainder
+					let newPackSizes = packSizes.filter( packSize => { return packSize <= remainder; } );
+
+					let subValue = this.calc(code, remainder, newPackSizes, results); // --->> recursive call <<----
+					if (subValue.status) {
+						results.push(ret); return ret; // if the child recursive call worked, then this one worked
+					}
+				}
+
+				return { "status": false}; // looped through all pack sizes and could not find a whole number solution
+			}
+
+			/**
+			 *
+			 * @param {string} input
+			 * @return {{} | Error | null}
+			 */
+			validateItem(input = null) {
+
+				if (input === null) {
+					return null;
+				}
+
+				input = input.trim(); // clean + sanitize string
+				if (input === "") {
+					return null; // we don't care about empty lines ? maybe we doo and we should return line number?
+				}
+
+				// validate input
+				if (input.indexOf(" ") === -1) {
+					return new Error(`E001,invalid item line: ${input}`);
+				}
+
+				// extract requestCount code
+				let [numberOfItems, code] = input.split(" ");
+				if (numberOfItems == null || code == null) {
+					return new Error(`E002,input string is invalid: ${input}`);
+				}
+				code = code.trim();
+
+				// get handle to product pack info
+				if (!(code in this.product)) {
+					return new Error(`E003,Unable to find product pack info for productCode:${code}, original: ${input}`);
+				}
+
+				if (!(code in this.name)) {
+					return new Error(`E004,Unable to find product name for productCode:${code}, original: ${input}`);
+				}
+
+				numberOfItems = parseInt(numberOfItems);
+				if (isNaN(numberOfItems)) {
+					return new Error(`E005,invalid number of items for productCode:${code}, original: ${input}`);
+				}
+
+				return {"code": code, "numberOfItems": numberOfItems}
+			}
+
+			/** @returns {{}} */
+			get name() {
+				return this.getProperty('name', {});
+			}
+
+			/** @param {{}} value */
+			set name(value) {
+				this.setProperty('name', value);
+			}
+
+			/** @returns {{}} */
+			get product() {
+				return this.getProperty('product', {});
+			}
+
+			/** @param {{}} value */
+			set product(value) {
+				this.setProperty('product', value);
+			}
+
+
+			/** @returns {{}[]} */
+			get payload() {
+				return this.getProperty('payload', []);
+			}
+
+			/** @param {{}[]} value */
+			set payload(value) {
+				this.setProperty('payload', value);
+			}
+
+			/** @returns {Error[]} */
+			get error() {
+				return this.getProperty('error', []);
+			}
+
+			/** @param {Error[]} value */
+			set error(value) {
+				this.setProperty('error', value);
+			}
+
+			/** @returns {string[] | string} */
+			get inputStream() {
+				return this.getProperty('inputStream', false);
+			}
+
+			/** @param {string[] | string} value */
+			set inputStream(value) {
+				this.setProperty('inputStream', value);
+			}
+
+		}
+
+
+    </script>
+
+    <style>
+        h2.error {
+            color: red;
+        }
+        #error {
+            color: red;
+        }
+
+        h2.input {
+            color: green;
+        }
+        #input {
+            color: green;
+        }
+
+        h2.output {
+            color: darkblue;
+        }
+        #output {
+            color: darkblue;
+        }
+
+    </style>
+
+    <script>
+
+		function pageStart() {
+		    tests();
+		    run();
+		}
+
+		function run() {
+			let B = new Bakery(name, product);
+			B.main(payloads.standard.stream);
+
+			let view = new BakeryView(B);
+			view.configureElements("input", "output", "error");
+			view.render();
+		}
+
+		function tests() {
+			let B = new Bakery(name, product);
+
+			let view = new BakeryTestsView(B);
+			for (let testPayloadKey of Object.keys(payloads)) {
+
+				B.main(payloads[testPayloadKey].stream || null);
+
+				view.configureElements("tests");
+				view.config = payloads[testPayloadKey]; // now we have expected value and test description
+				view.render();
+
+			}
+		}
+
+    </script>
+
+</head>
+<body onload="pageStart()">
+
+    <h1 >Code Execution</h1>
+
+    <h2 class="input">INPUT</h2> <pre id="input"></pre>
+    <h2 class="output">OUTPUT</h2> <div id="output"></div>
+    <h2 class="error">ERRORS</h2> <div id="error"></div>
+
+    <h1 class="tests">TESTS</h1>
+    <table width="100%" border="1" >
+        <thead>
+        <tr>
+            <th>passed</th>
+            <th>name</th>
+            <th>input</th>
+        </tr>
+        </thead>
+        <tbody id="tests">
+        </tbody>
+    </table>
+</body>
+</html>

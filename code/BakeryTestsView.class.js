@@ -43,7 +43,7 @@ class BakeryTestsView extends base {
 		//console.log("this.config = ",this.config);
 
 		let testResult = {
-			"status":          "X",
+			"status":          "FAIL",
 			"name":            this.config.description || "",
 			"type":            typeof this.config.stream,
 			"length":          JSON.stringify(this.config.stream).length,
@@ -55,7 +55,7 @@ class BakeryTestsView extends base {
 
 		//
 		if (testResult.expectedPayload === testResult.actualPayload && testResult.expectedError === testResult.actualError) {
-			testResult.status = "TICK";
+			testResult.status = "PASS";
 		}
 
 		this.output(`
