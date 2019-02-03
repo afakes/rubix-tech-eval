@@ -1,14 +1,22 @@
 
 # Bakery Tech Evaluation
 
-## Explanation of the bakery packing algorithm 
-The Bakery packing problem, belongs the bin-packing family of algorithms. i.e. "how to select the smallest number of; (baskets, bins, items) to fulfil the total requested items". The goal of a good bin-packing algorithm is to achieve a result within low-order  polynomial time, I attempt to achieve this through sorting, and logical subsets. 
+ - Name: Adam Fakes
+ - email: adam@datavi.co
+ - phone: +61 (0)401-302-243 
 
-### Assumptions
- - only solutions that provide whole number matching pack sizes will be accepted  
+## Summary
+ - it's a "bin-packing" problem
+ - [executable code](http://datavi.co/rubix/app.html)
+ - [readable code](https://github.com/afakes/rubix-tech-eval)
+ - [requirements](https://github.com/afakes/rubix-tech-eval/blob/master/doc/bakery.pdf)
+
+## Explanation of the bakery packing algorithm 
+The Bakery packing problem, belongs the bin-packing family of algorithms. i.e. "how to select the smallest number of; (baskets, bins, items) to fulfil the total requested items". The goal of a good bin-packing algorithm is to achieve a result within low-order polynomial time, I attempt to achieve this through sorting, and logical subsets. 
 
 ### My Solution
-A way to think about my solution could be a tree. 
+If we accept that the number of pack configurations will be finite then we know the number of solutions, must be either finite, or unsolvable, this led me to think of it as a tree, with branches for calculation and nodes for decisions.
+   
  1. The root node contains the original value 'requested number of items', 
  1. We create child nodes,  with each child node being assigned the value of one of pack sizes, until all pack sizes have been allocated. note we only create a child node for packs that are less than or equal to the 'number of items'  
  1. Perform an integer division at the node using the 'requested number of items' by the 'node value'. resulting in a count of packs, and a remaining 'number of items'
@@ -50,20 +58,18 @@ To download the full code please clone the following repository on GitHUB
 To download the full code as a ZIP file, access the following URL
  - http://datavi.co/rubix/AdamFakes_rubix-tech-eval.zip 
 
-
-
-
 ## Test cases of the code
  
- - standard - the supplied tests
- - string   - the supplied tests in a string format
- - number   - to check error handling 
- - random   - a mix of good and bad inputs to test error handling and process
- - empty    - empty data. 
+ - PASS - working solution with array input
+ - PASS - working solution with string input
+ - PASS - invalid input with number input
+ - PASS - random working and invalid	lines
+ - PASS - empty array
+ - PASS - null input
+ - PASS - no solution
+ - PASS - empty string
 
 Test execution is available at: http://datavi.co/rubix/code/tests.html 
-
-
 
 
 ## Data 
@@ -129,12 +135,13 @@ By denormalising the item code and name, we can save on storage space, search ti
 
 ## Decisions & Assumptions
 
-### No Solution
-If there was not complete solution, i.e. the number of request items could not 
-be pack with the pack size configurations supplied, then the request was marked with "No Solution".
- - A solution this issue could be: increasingly add 1 to the number of 
-   items request until we find a solution, of course this would increase the cost price etc.
 
+### Assumptions
+ - only solutions that provide whole number matching pack sizes will be accepted
+
+### No Solution
+If there was not complete solution, i.e. the number of request items could not be packed with the pack size configurations supplied, then the request was marked with "No Solution".
+ - A solution this issue could be: increasingly add 1 to the number of items request until we find a solution, of course this would increase the cost price etc. leading to a new search domain, "what is the lowest cost for extra items ... "
 
 
 ### Language
@@ -144,8 +151,6 @@ For this test I have chosen to use ECMAScript6 (ES6) / HTML / CSS. A few of the 
  - The ECMAScript6 functions & classes, can be ported directly to NodeJS, eseentially are NodeJS, excluding references to the Web Browser DOM, these have been kept to a minimum with using the a MVC pattern   
  - A single file exchanged with other users. Any internet user will already have a ES6 capable environment, i.e. the Web Browser. This environment additionally serves as the visualisation platform
  - Debugging within the browser is straight forward, with the JS console  
-
-
 
 ## references: 
  - Friesen, D. K.  (1986) Variable Sized Bin Packing  SIAM Journal on Computing 15:1, 222-230 

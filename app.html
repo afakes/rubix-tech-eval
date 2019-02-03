@@ -67,6 +67,14 @@
 		};
     </script>
     <script language="JavaScript" >
+		/**
+		 * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
+		 * This is a component of the solution the the Bakery Packing problem
+		 *
+		 * data sets used to test the system
+		 *
+		 */
+
 		let payloads = {
 			"standard": {
 				"description": "working solution - array",
@@ -77,7 +85,8 @@
 				],
 				"expected": {
 					"payload": `[{"originalItem":"10 VS5","name":"Vegemite Scroll","code":"VS5","numberOfItems":10,"canBePacked":true,"totalCost":17.98,"breakdown":[{"status":true,"count":2,"packSize":5,"packCost":8.99,"lineItemCost":17.98}]},{"originalItem":"14 MB11","name":"Blueberry Muffin","code":"MB11","numberOfItems":14,"canBePacked":true,"totalCost":54.8,"breakdown":[{"status":true,"count":3,"packSize":2,"packCost":9.95,"lineItemCost":29.849999999999998},{"status":true,"count":1,"packSize":8,"packCost":24.95,"lineItemCost":24.95}]},{"originalItem":"13 CF","name":"Croissant","code":"CF","numberOfItems":13,"canBePacked":true,"totalCost":25.849999999999998,"breakdown":[{"status":true,"count":1,"packSize":3,"packCost":5.95,"lineItemCost":5.95},{"status":true,"count":2,"packSize":5,"packCost":9.95,"lineItemCost":19.9}]}]`,
-					"error": `[]`
+					"error": `[]`,
+					"hasSolution": true
 				}
 			},
 			"string": {
@@ -88,8 +97,9 @@
 		13 CF
 		`,
 				"expected": {
-					"payload": `[{"originalItem":"\\t\\t10 VS5","name":"Vegemite Scroll","code":"VS5","numberOfItems":10,"canBePacked":true,"totalCost":17.98,"breakdown":[{"status":true,"count":2,"packSize":5,"packCost":8.99,"lineItemCost":17.98}]},{"originalItem":"\\t\\t14 MB11","name":"Blueberry Muffin","code":"MB11","numberOfItems":14,"canBePacked":true,"totalCost":54.8,"breakdown":[{"status":true,"count":3,"packSize":2,"packCost":9.95,"lineItemCost":29.849999999999998},{"status":true,"count":1,"packSize":8,"packCost":24.95,"lineItemCost":24.95}]},{"originalItem":"\\t\\t13 CF","name":"Croissant","code":"CF","numberOfItems":13,"canBePacked":true,"totalCost":25.849999999999998,"breakdown":[{"status":true,"count":1,"packSize":3,"packCost":5.95,"lineItemCost":5.95},{"status":true,"count":2,"packSize":5,"packCost":9.95,"lineItemCost":19.9}]}]`,
-					"error": `[]`
+					"payload": `[{"originalItem":"10 VS5","name":"Vegemite Scroll","code":"VS5","numberOfItems":10,"canBePacked":true,"totalCost":17.98,"breakdown":[{"status":true,"count":2,"packSize":5,"packCost":8.99,"lineItemCost":17.98}]},{"originalItem":"\\t\\t14 MB11","name":"Blueberry Muffin","code":"MB11","numberOfItems":14,"canBePacked":true,"totalCost":54.8,"breakdown":[{"status":true,"count":3,"packSize":2,"packCost":9.95,"lineItemCost":29.849999999999998},{"status":true,"count":1,"packSize":8,"packCost":24.95,"lineItemCost":24.95}]},{"originalItem":"\\t\\t13 CF","name":"Croissant","code":"CF","numberOfItems":13,"canBePacked":true,"totalCost":25.849999999999998,"breakdown":[{"status":true,"count":1,"packSize":3,"packCost":5.95,"lineItemCost":5.95},{"status":true,"count":2,"packSize":5,"packCost":9.95,"lineItemCost":19.9}]}]`,
+					"error": `[]`,
+					"hasSolution": true
 				}
 			},
 			"number": {
@@ -97,7 +107,8 @@
 				"stream": 1234,
 				"expected": {
 					"payload": `[]`,
-					"error": `[{}]`
+					"error": `[{}]`,
+					"hasSolution": false
 				}
 			},
 			"random": {
@@ -116,15 +127,8 @@
 				],
 				"expected": {
 					"payload": `[{"originalItem":"10 VS5","name":"Vegemite Scroll","code":"VS5","numberOfItems":10,"canBePacked":true,"totalCost":17.98,"breakdown":[{"status":true,"count":2,"packSize":5,"packCost":8.99,"lineItemCost":17.98}]},{"originalItem":"14 MB11","name":"Blueberry Muffin","code":"MB11","numberOfItems":14,"canBePacked":true,"totalCost":54.8,"breakdown":[{"status":true,"count":3,"packSize":2,"packCost":9.95,"lineItemCost":29.849999999999998},{"status":true,"count":1,"packSize":8,"packCost":24.95,"lineItemCost":24.95}]},{"originalItem":"13 CF","name":"Croissant","code":"CF","numberOfItems":13,"canBePacked":true,"totalCost":25.849999999999998,"breakdown":[{"status":true,"count":1,"packSize":3,"packCost":5.95,"lineItemCost":5.95},{"status":true,"count":2,"packSize":5,"packCost":9.95,"lineItemCost":19.9}]},{"originalItem":"1 CF","name":"Croissant","code":"CF","numberOfItems":1,"canBePacked":false,"totalCost":0,"breakdown":[]},{"originalItem":"7 CF","name":"Croissant","code":"CF","numberOfItems":7,"canBePacked":false,"totalCost":0,"breakdown":[]}]`,
-					"error": `[{},{},{},{}]`
-				}
-			},
-			"no_solution": {
-				"description": "No Solution",
-				"stream": "7 CF",
-				"expected": {
-					"payload": `[]`,
-					"error": `[]`
+					"error": `[{},{},{},{}]`,
+					"hasSolution": false
 				}
 			},
 			"emptyArray": {
@@ -132,7 +136,8 @@
 				"stream": [],
 				"expected": {
 					"payload": `[]`,
-					"error": `[]`
+					"error": `[]`,
+					"hasSolution": false
 				}
 			},
 			"null": {
@@ -140,7 +145,17 @@
 				"stream": null,
 				"expected": {
 					"payload": `[]`,
-					"error": `[{}]`
+					"error": `[{}]`,
+					"hasSolution": false
+				}
+			},
+			"no_solution": {
+				"description": "no solution",
+				"stream": "1 CF",
+				"expected": {
+					"payload": `[{"originalItem":"1 CF","name":"Croissant","code":"CF","numberOfItems":1,"canBePacked":false,"totalCost":0,"breakdown":[]}]`,
+					"error": `[]`,
+					"hasSolution": false
 				}
 			},
 			"emptyString": {
@@ -148,7 +163,8 @@
 				"stream": "",
 				"expected": {
 					"payload": `[]`,
-					"error": `[{}]`
+					"error": `[{}]`,
+					"hasSolution": false
 				}
 			}
 
@@ -156,6 +172,7 @@
 
     </script>
     <script language="JavaScript" >
+
 
 		/**
 		 * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
@@ -200,19 +217,30 @@
 				//console.log("this.config = ",this.config);
 
 				let testResult = {
-					"status":          "FAIL",
+					"status":          "",
 					"name":            this.config.description || "",
 					"type":            typeof this.config.stream,
 					"length":          JSON.stringify(this.config.stream).length,
 					"actualPayload":   JSON.stringify(this.src.payload),
 					"actualError":     JSON.stringify(this.src.error),
 					"expectedPayload": this.config.expected.payload,
-					"expectedError":   this.config.expected.error
+					"expectedError":   this.config.expected.error,
+					"actualHasSolution":   this.src.hasSolution,
+					"expectedHasSolution": this.config.expected.hasSolution
 				};
 
 				console.log("testResult = ",testResult);
-				if (testResult.expectedPayload === testResult.actualPayload && testResult.expectedError === testResult.actualError) {
+
+				console.log("testResult.actualPayload = ",testResult.actualPayload);
+
+				//
+				if (testResult.expectedPayload     === testResult.actualPayload &&
+					testResult.expectedError       === testResult.actualError &&
+					testResult.expectedHasSolution === testResult.actualHasSolution
+				) {
 					testResult.status = "PASS";
+				} else {
+					testResult.status = "FAIL";
 				}
 
 				this.output(`
@@ -251,7 +279,6 @@
 			}
 
 		}
-
 
 
 
@@ -344,6 +371,7 @@
 				let str;
 
 				let lineItems = singlePayload.breakdown || [];
+
 				if (lineItems.length === 0) {
 					str = `Unable to find a solution for product ${singlePayload.code} with ${singlePayload.numberOfItems} items, using current product pack sizes`;
 				} else {
@@ -396,6 +424,7 @@
 
 
     </script>
+
     <script language="JavaScript" >
 		/**
 		 * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
@@ -415,21 +444,45 @@
 			 */
 			main(inputStream = []) {
 
+				this.hasSolution = true;
+
 				this.inputStream = inputStream;
 				this.error = [];
 				this.payload = [];
 
-				if (typeof inputStream === "string") { inputStream = inputStream.split("\n"); }
+				if (typeof inputStream === "string") {
+					inputStream = inputStream.trim().split("\n");
+				}
 				if (!Array.isArray(inputStream)) {
-					this.error.push(new Error(`input stream invalid`)); return false;
+					this.error.push(new Error(`input stream invalid`));
+					this.hasSolution = false;
+					return false;
+				}
+
+				if (inputStream.length === 0) {
+					this.hasSolution = false;
+					return false;
 				}
 
 				for (let inputLine of inputStream) {
+
+					if (inputLine === "") {continue;}
+
 					let itemResult = this.processItem(inputLine);
-					if (itemResult == null) {continue; }
-					if (itemResult.error !== null) { this.error.push(itemResult.error); }
+					console.log("itemResult = ",itemResult);
+					if (itemResult == null) {
+						this.hasSolution = false;
+						continue;
+					}
+					if (itemResult.error !== null) {
+						this.error.push(itemResult.error);
+						this.hasSolution = false;
+					}
 					if (itemResult.payload !== null) {
 						this.payload.push(itemResult.payload);
+						if (!itemResult.payload.canBePacked) {
+							this.hasSolution = false;
+						}
 					}
 				}
 
@@ -606,9 +659,16 @@
 				this.setProperty('inputStream', value);
 			}
 
+			/** @returns {boolean} */
+			get hasSolution() {
+				return this.getProperty('hasSolution', false);
+			}
+
+			/** @param {boolean} value */
+			set hasSolution(value) {
+				this.setProperty('hasSolution', value);
+			}
 		}
-
-
     </script>
 
     <style>
