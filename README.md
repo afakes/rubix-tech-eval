@@ -8,7 +8,7 @@
 ## Summary
  - it's a "bin-packing" problem
  - [executable code](http://datavi.co/rubix/app.html)
- - [readable code](https://github.com/afakes/rubix-tech-eval)
+ - [readable code](https://github.com/afakes/rubix-tech-eval/tree/master/code)
  - [requirements](https://github.com/afakes/rubix-tech-eval/blob/master/doc/bakery.pdf)
 
 ## Explanation of the bakery packing algorithm 
