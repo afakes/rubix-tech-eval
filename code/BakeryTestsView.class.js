@@ -1,3 +1,5 @@
+
+
 /**
  * Created by Adam Fakes <adam@datavi.co> on 31/01/2019.
  * Bakery Packing problem component
@@ -12,9 +14,7 @@ class BakeryTestsView extends base {
 		this.src = src;
 
 		this.elements = {
-			"input": null,
 			"output": null,
-			"error": null
 		};
 
 	}
@@ -40,73 +40,36 @@ class BakeryTestsView extends base {
 	render() {
 		if (this.src == null) { return; }
 
-		this.input();
-		this.payload();
-		this.error();
+		//console.log("this.config = ",this.config);
 
-	}
+		let testResult = {
+			"status":          "X",
+			"name":            this.config.description || "",
+			"type":            typeof this.config.stream,
+			"length":          JSON.stringify(this.config.stream).length,
+			"actualPayload":   JSON.stringify(this.src.payload),
+			"actualError":     JSON.stringify(this.src.error),
+			"expectedPayload": this.config.expected.payload,
+			"expectedError":   this.config.expected.error
+		};
 
-	input() {
-		if (this.elements.input === null) { return; }
-		this.elements.input.innerText = JSON.stringify(this.src.inputStream || "" , null, 2);
-	}
-
-	/**
-	 * Render the payload of the Bakery Object
-	 */
-	payload() {
-		if (this.elements.output === null) { return; }
-
-		for (let lineItem of this.src.payload || [] ) {
-			this.elements.output.appendChild(this.formatLineItem(lineItem));
-		}
-	}
-
-	/**
-	 * configured formatter
-	 * @return {Intl.NumberFormat}
-	 */
-	get numberFormatter() {
-		return new Intl.NumberFormat('en-AU', { style: 'decimal', minimumFractionDigits: 2});
-	}
-
-	/**
-	 * for mat line-item for output
-	 * @param lineItem
-	 * @return {DocumentFragment}
-	 */
-	formatLineItem(lineItem) {
-
-		let formatter = this.numberFormatter;
-
-		let str = `${lineItem.numberOfItems}&nbsp;${lineItem.code}&nbsp;$${formatter.format(lineItem.totalCost)}`;
-
-		for (let subItem of lineItem.breakdown || []) {
-			str += `\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${subItem.count}&nbsp;x&nbsp;${subItem.packSize}&nbsp;$${formatter.format(subItem.packCost)}`;
+		//
+		if (testResult.expectedPayload === testResult.actualPayload && testResult.expectedError === testResult.actualError) {
+			testResult.status = "TICK";
 		}
 
-		return this.toHTML(`<pre>${str}</pre>`);
+		this.output(`
+            <tr>
+                <td valign="middle">${testResult.status}</td>
+                <td valign="top">${testResult.name}</td>
+                <td valign="top">${testResult.type} [${testResult.length}] </td>
+            </tr>
+		`);
+
 	}
 
-	error() {
-		if (this.elements.error === null) { return; }
-
-		let str = `<ul>`;
-		for (let error of this.src.error || []) { str += `<li>${error.message || ""}</li>\n`; }
-		str += `<ul>`;
-
-		this.elements.error.appendChild(this.toHTML(str));
-	}
-
-
-
-	/**
-	 * convert string into HTML appendable object (HTML Fragment)
-	 * @param {string} string
-	 * @return {DocumentFragment}
-	 */
-	toHTML(string = "") {
-		return document.createRange().createContextualFragment(string);
+	output(str) {
+		this.elements.output.innerHTML += str;
 	}
 
 	/** @returns {{}} */
@@ -119,10 +82,18 @@ class BakeryTestsView extends base {
 	    this.setProperty('elements', value);
 	}
 
+
+	/** @returns {{}} */
+	get config() {
+	    return this.getProperty('config', {});
+	}
+
+	/** @param {{}} value */
+	set config(value) {
+	    this.setProperty('config', value);
+	}
+
 }
 
-Error.prototype.toString = function() {
-	return this.message;
-}
 
 

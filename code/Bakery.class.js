@@ -156,9 +156,6 @@ class Bakery extends base {
 		return {"code": code, "numberOfItems": numberOfItems}
 	}
 
-
-
-
 	/** @returns {{}} */
 	get name() {
 		return this.getProperty('name', {});
@@ -180,12 +177,12 @@ class Bakery extends base {
 	}
 
 
-	/** @returns {[]{}} */
+	/** @returns {{}[]} */
 	get payload() {
 	    return this.getProperty('payload', []);
 	}
 	
-	/** @param {[]{}} value */
+	/** @param {{}[]} value */
 	set payload(value) {
 	    this.setProperty('payload', value);
 	}

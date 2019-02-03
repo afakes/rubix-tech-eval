@@ -59,8 +59,8 @@ class BakeryView  extends base {
 	payload() {
 		if (this.elements.output === null) { return; }
 
-		for (let lineItem of this.src.payload || [] ) {
-			this.elements.output.appendChild(this.formatLineItem(lineItem));
+		for (let outputs of this.src.payload || [] ) {
+			this.elements.output.appendChild(this.toHTML(this.formatLineItem(outputs)));
 		}
 	}
 
@@ -74,20 +74,31 @@ class BakeryView  extends base {
 
 	/**
 	 * for mat line-item for output
-	 * @param lineItem
+	 * @param {{}} singlePayload
 	 * @return {DocumentFragment}
 	 */
-	formatLineItem(lineItem) {
+	formatLineItem(singlePayload) {
 
 		let formatter = this.numberFormatter;
 
-		let str = `${lineItem.numberOfItems}&nbsp;${lineItem.code}&nbsp;$${formatter.format(lineItem.totalCost)}`;
+		let str;
 
-		for (let subItem of lineItem.breakdown || []) {
-			str += `\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${subItem.count}&nbsp;x&nbsp;${subItem.packSize}&nbsp;$${formatter.format(subItem.packCost)}`;
+		let lineItems = singlePayload.breakdown || [];
+		if (lineItems.length === 0) {
+			str = `Unable to find a solution for product ${singlePayload.code} with ${singlePayload.numberOfItems} items, using current product pack sizes`;
+		} else {
+			// add single payload header, i.e. the line item
+			str = `${singlePayload.numberOfItems}&nbsp;${singlePayload.code}&nbsp;$${formatter.format(singlePayload.totalCost)}`;
+
+			for (let subItem of lineItems) {
+				str += `\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${subItem.count}&nbsp;x&nbsp;${subItem.packSize}&nbsp;$${formatter.format(subItem.packCost)}`;
+			}
 		}
 
-		return this.toHTML(`<pre>${str}</pre>`);
+		return `<pre>${str}</pre>`;
+
+
+
 	}
 
 	error() {

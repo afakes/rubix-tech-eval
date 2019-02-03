@@ -14,12 +14,10 @@
 				let view = new BakeryTestsView(B);
 				for (let testPayloadKey of Object.keys(payloads)) {
 
-					console.log("testPayloadKey = ",testPayloadKey);
 					B.main(payloads[testPayloadKey].stream || null);
-					console.log("B.payload = ",JSON.stringify(B.payload));
-					console.log("B.error = ",`${B.error}`);
 
 					view.configureElements("tests");
+					view.config = payloads[testPayloadKey]; // now we have expected value and test description
 					view.render();
 					console.log("\n\n");
 				}
@@ -30,6 +28,16 @@
     </head>
     <body onload="pageStart()">
         <h1 class="tests">TESTS</h1>
-        <div id="tests"></div>
+        <table width="100%" border="1" >
+            <thead>
+                <tr>
+                    <th>passed</th>
+                    <th>name</th>
+                    <th>input</th>
+                </tr>
+            </thead>
+            <tbody id="tests">
+            </tbody>
+        </table>
     </body>
 </html>
