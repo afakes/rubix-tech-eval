@@ -10,7 +10,8 @@
  - [executable code](http://datavi.co/rubix/app.html)
  - [readable code](https://github.com/afakes/rubix-tech-eval/tree/master/code)
  - [requirements](https://github.com/afakes/rubix-tech-eval/blob/master/doc/bakery.pdf)
-
+ - [core of the solution as code](https://github.com/afakes/rubix-tech-eval/blob/master/code/Bakery.class.js#L115)
+ 
 ## Explanation of the bakery packing algorithm 
 The Bakery packing problem, belongs the bin-packing family of algorithms. i.e. "how to select the smallest number of; (baskets, bins, items) to fulfil the total requested items". The goal of a good bin-packing algorithm is to achieve a result within low-order polynomial time, I attempt to achieve this through sorting, and logical subsets. 
 
@@ -18,20 +19,19 @@ The Bakery packing problem, belongs the bin-packing family of algorithms. i.e. "
 If we accept that the number of pack configurations will be finite then we know the number of solutions, must be either finite, or unsolvable, this led me to think of it as a tree, with branches for calculation and nodes for decisions.
    
  1. The root node contains the original value 'requested number of items', 
- 1. We create child nodes,  with each child node being assigned the value of one of pack sizes, until all pack sizes have been allocated. note we only create a child node for packs that are less than or equal to the 'number of items'  
- 1. Perform an integer division at the node using the 'requested number of items' by the 'node value'. resulting in a count of packs, and a remaining 'number of items'
-    1. if the integer division does not have a remainder, we record the node value (i.e. pack size) and the whole number
+ 1. We create child nodes,  with each child node being assigned the value of a pack size, until all pack sizes have been allocated. **note:** _we only create a child node for pack a that is; less than or equal to, the 'number of items'_  
+ 1. Perform an integer division at the node -producing the edge- using the 'requested number of items' by the 'node value' (pack size), resulting in; a count of packs -for that node-, and a remaining 'number of items'
+    1. if the integer division does not have a remainder, we record the node value (pack size) and the whole number count 
     1. a remainder of the division indicates we have not fulfilled the 'requested number of items'.  
         1. We now create a new set of child nodes, below the current node, similar to step [2].  
         1. perform the actions of [3], on this set of nodes.
 
-
 ![visual representation of algorithm](doc/images/diagrams.jpg?raw=true "visual representation of algorithm")
+Figure 1: an example of allocating 14 muffins, using the Bakery packing algorithm.
 
 #### Pseudo code
 
   - **input**: _numberOfItems_
-
   - sort pack sizes for the item type in descending order 
   - extract the numberOfItems
   - loop through the pack sizes for the item type  
@@ -40,8 +40,7 @@ If we accept that the number of pack configurations will be finite then we know 
       - NO 
         -- we take the remainder of the division and test equal or smaller sized packs             
         -- repeat until remainder is zero or no solution can be found 
-
-  - **output**: | pack of size |
+  - **output**: | pack of size | (count of packs of a certain size)
 
 
 ## Steps to compile and run the code  
@@ -52,11 +51,22 @@ To access and online version of the code access the following URL
 
 ### code - via GitHUB
 To download the full code please clone the following repository on GitHUB 
- - https://github.com/afakes/rubix-tech-eval 
+ - `git clone https://github.com/afakes/rubix-tech-eval` 
 
 ### zip archive  
 To download the full code as a ZIP file, access the following URL
  - http://datavi.co/rubix/AdamFakes_rubix-tech-eval.zip 
+
+ 
+#### run code
+ - `cd rubix-tech-eval`
+ - `google-chrome app.html`  (assuming UNIX command line, with Google Chrome installed)
+ 
+#### run tests
+ - `cd rubix-tech-eval/code`
+ - `google-chrome tests.html`  (assuming UNIX command line, with Google Chrome installed)
+
+ 
 
 ## Test cases of the code
  
@@ -151,6 +161,28 @@ For this test I have chosen to use ECMAScript6 (ES6) / HTML / CSS. A few of the 
  - The ECMAScript6 functions & classes, can be ported directly to NodeJS, eseentially are NodeJS, excluding references to the Web Browser DOM, these have been kept to a minimum with using the a MVC pattern   
  - A single file exchanged with other users. Any internet user will already have a ES6 capable environment, i.e. the Web Browser. This environment additionally serves as the visualisation platform
  - Debugging within the browser is straight forward, with the JS console  
+
+
+## Files
+```text
+├── app.html                       - compiled version of code 
+├── code
+│   ├── Bakery.class.js           - compute the Bakery Pack solution
+│   ├── BakeryTestsView.class.js  - display the output of a set of test executions
+│   ├── BakeryView.class.js       - "Production" output of Bakery Class.  
+│   ├── base.class.js             - Simple base class to support transparent private properties
+│   ├── index.html                - main page showing working solution from requirements
+│   ├── payloads.js               - various payloads to test with
+│   ├── productData.js            - Bakery pack size data and product information
+│   └── tests.html                - test executions page
+├── doc
+│   ├── bakery.pdf                - original requirements
+│   ├── images                    
+│   │   └── diagrams.jpg         - figure "visual representation of algorithm"
+│   └── requirements.md           - original requirements in Markdown
+└── README.md                      - this file, description of solution, links to source code and journal references
+```
+
 
 ## references: 
  - Friesen, D. K.  (1986) Variable Sized Bin Packing  SIAM Journal on Computing 15:1, 222-230 

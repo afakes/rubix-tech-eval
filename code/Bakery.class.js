@@ -41,7 +41,6 @@ class Bakery extends base {
 			if (inputLine === "") {continue;}
 
 			let itemResult = this.processItem(inputLine);
-			console.log("itemResult = ",itemResult);
 			if (itemResult == null) {
 				this.hasSolution = false;
 				continue;
@@ -84,15 +83,16 @@ class Bakery extends base {
 			"breakdown":     []
 		};
 
-		// pack sizes greater than the item.numberOfItems will not lead to a solution, convert to integer, and sort descending
+		// remove pack sizes greater than the item.numberOfItems as they will not lead to a solution, convert to integer, and sort descending
 		let packSizes = Object.keys(this.product[item.code])
 			.map(packSize => { return parseInt(packSize) })
 			.filter(packSize => { return packSize <= item.numberOfItems })
 			.sort( (a, b) => { return b-a });
 
-		let calc = this.calc(item.code, item.numberOfItems, packSizes, result.breakdown); // find the solution
+		let calc = this.calc(item.code, item.numberOfItems, packSizes, result.breakdown); // recursive call - find the solution
 		result.canBePacked = calc.status;
 
+		// if the child node(s) has a solution then the parent node is said to be solved
 		if (result.canBePacked) {
 			for ( let lineItemObject of result.breakdown ) {
 				lineItemObject.packCost = this.product[item.code][lineItemObject.packSize];
