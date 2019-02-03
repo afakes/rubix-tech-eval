@@ -168,7 +168,7 @@ If there was not complete solution, i.e. the number of request items could not b
 _**ECMAScript6** (aka ES6, JavaScript, or NodeJS)_
 
 For this test I have chosen to use ECMAScript6 (ES6) / HTML / CSS. A few of the factors that led to this decision; 
- - The ECMAScript6 functions & classes, can be ported directly to NodeJS, eseentially are NodeJS, excluding references to the Web Browser DOM, these have been kept to a minimum with using the a MVC pattern   
+ - The ECMAScript6 functions & classes, can be ported directly to NodeJS, essentially are NodeJS, excluding references to the Web Browser DOM, these have been kept to a minimum with using the a MVC pattern   
  - A single file exchanged with other users. Any internet user will already have a ES6 capable environment, i.e. the Web Browser. This environment additionally serves as the visualisation platform
  - Debugging within the browser is straight forward, with the JS console  
 
