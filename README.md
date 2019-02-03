@@ -6,6 +6,7 @@
 
 ## Summary
  - it's a "bin-packing" problem
+ - tree search, depth first, with child node population subset  
  - [executable code](http://datavi.co/rubix/app.html)
  - [readable code](https://github.com/afakes/rubix-tech-eval/tree/master/code)
  - [requirements](https://github.com/afakes/rubix-tech-eval/blob/master/doc/bakery.pdf)
@@ -20,11 +21,11 @@ The Bakery packing problem, belongs the bin-packing family of algorithms. i.e. "
 If we accept that the number of pack configurations will be finite then we know the number of solutions, must be either finite, or unsolvable, this led me to think of it as a tree, with branches for calculation and nodes for decisions.
    
  1. The root node contains the original value 'requested number of items', 
- 1. We create child nodes,  with each child node being assigned the value of a pack size, until all pack sizes have been allocated. **note:** _we only create a child node for pack a that is; less than or equal to, the 'number of items'_  
- 1. Perform an integer division at the node -producing the edge- using the 'requested number of items' by the 'node value' (pack size), resulting in; a count of packs -for that node-, and a remaining 'number of items'
-    1. if the integer division does not have a remainder, we record the node value (pack size) and the whole number count 
+ 1. We create child nodes,  with each child node being assigned the value of a pack size, until all pack sizes have been allocated. **note:** _we only create a child node for a pack that is; less than or equal to, the 'number of items'_  
+ 1. Then perform an integer division at the node -producing the edge- using the 'requested number of items' by the 'node value' (pack size), resulting in; a count of packs -for that node-, and a remaining 'number of items'
+    1. if the integer division does not have a remainder, we record the node value (pack size) and the whole number count, and return to the parent node 
     1. a remainder of the division indicates we have not fulfilled the 'requested number of items'.  
-        1. We now create a new set of child nodes, below the current node, similar to step [2].  
+        1. We now create a new set of child nodes, below the current node, similar to step [2]. note: that child nodes values (pack size we want to search) from here; will be less than of equal to the remainder, therefore limiting the search space  
         1. perform the actions of [3], on this set of nodes.
 
 ![visual representation of algorithm](doc/images/diagrams.jpg?raw=true "visual representation of algorithm")
@@ -41,7 +42,7 @@ Figure 1: an example of allocating 14 muffins, using the Bakery packing algorith
       - NO 
         -- we take the remainder of the division and test equal or smaller sized packs             
         -- repeat until remainder is zero or no solution can be found 
-  - **output**: | pack of size | (count of packs of a certain size)
+  - **output**: pack of size & (count of packs of a certain size)
 
 
 ## 3 Steps to compile and run the code  
