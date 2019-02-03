@@ -51,7 +51,7 @@ Figure 1: an example of allocating 14 muffins, using the Bakery packing algorith
 
 #### 3.1.1 via GitHUB
 To download the full code please clone the following repository on GitHUB 
- - `git clone https://github.com/afakes/rubix-tech-eval` 
+ - `git clone https://github.com/afakes/rubix-tech-eval AdamFakesTechEvaluation`  
 
 #### 3.1.2 zip archive  
 To download the full code as a ZIP file, access the following URL
@@ -64,8 +64,8 @@ To access and online version of the code access the following URL
  - URL: [http://datavi.co/rubix/app.html](http://datavi.co/rubix/app.html) 
 
 #### 3.2.2 locally 
- - `git clone https://github.com/afakes/rubix-tech-eval`
- - `cd rubix-tech-eval`
+ - `git clone https://github.com/afakes/rubix-tech-eval AdamFakesTechEvaluation`
+ - `cd AdamFakesTechEvaluation`
  - `google-chrome app.html`  (assuming UNIX command line, with Google Chrome installed)
  
 
@@ -87,9 +87,8 @@ To access and online version of the code access the following URL
  - Test execution is available at: [http://datavi.co/rubix/code/tests.html](http://datavi.co/rubix/code/tests.html) 
 
 #### 4.2.1 locally
- - `cd rubix-tech-eval/code`
- - `git clone https://github.com/afakes/rubix-tech-eval`
- - `cd rubix-tech-eval`
+ - `git clone https://github.com/afakes/rubix-tech-eval AdamFakesTechEvaluation`
+ - `cd AdamFakesTechEvaluation`
  - `google-chrome tests.html`  (assuming UNIX command line, with Google Chrome installed)
 
 
