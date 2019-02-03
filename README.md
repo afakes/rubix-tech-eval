@@ -94,7 +94,7 @@ To access and online version of the code access the following URL
 
 ## 5. Data 
 The data format, structure and order are important. Here I have restructured the data to allow for efficient access.  
-By denormalising the item code and name, we can save on storage space, search time, and indexing (depending on the backend storage solution) 
+By denormalising the item code and name (as per the JSON version), we can save on storage space, search time, and indexing (depending on the backend storage solution) 
  
 ### 5.1 Original 
 
