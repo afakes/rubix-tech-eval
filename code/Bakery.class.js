@@ -16,21 +16,45 @@ class Bakery extends base {
 	 */
 	main(inputStream = []) {
 
+		this.hasSolution = true;
+
 		this.inputStream = inputStream;
 		this.error = [];
 		this.payload = [];
 
-		if (typeof inputStream === "string") { inputStream = inputStream.split("\n"); }
+		if (typeof inputStream === "string") {
+			inputStream = inputStream.trim().split("\n");
+		}
 		if (!Array.isArray(inputStream)) {
-			this.error.push(new Error(`input stream invalid`)); return false;
+			this.error.push(new Error(`input stream invalid`));
+			this.hasSolution = false;
+			return false;
+		}
+
+		if (inputStream.length === 0) {
+			this.hasSolution = false;
+			return false;
 		}
 
 		for (let inputLine of inputStream) {
+
+			if (inputLine === "") {continue;}
+
 			let itemResult = this.processItem(inputLine);
-			if (itemResult == null) {continue; }
-			if (itemResult.error !== null) { this.error.push(itemResult.error); }
+			console.log("itemResult = ",itemResult);
+			if (itemResult == null) {
+				this.hasSolution = false;
+				continue;
+			}
+			if (itemResult.error !== null) {
+				this.error.push(itemResult.error);
+				this.hasSolution = false;
+			}
 			if (itemResult.payload !== null) {
 				this.payload.push(itemResult.payload);
+				if (!itemResult.payload.canBePacked) {
+					this.hasSolution = false;
+				}
 			}
 		}
 
@@ -206,6 +230,17 @@ class Bakery extends base {
 	set inputStream(value) {
 	    this.setProperty('inputStream', value);
 	}
+
+	/** @returns {boolean} */
+	get hasSolution() {
+	    return this.getProperty('hasSolution', false);
+	}
+
+	/** @param {boolean} value */
+	set hasSolution(value) {
+	    this.setProperty('hasSolution', value);
+	}
+
 
 }
 

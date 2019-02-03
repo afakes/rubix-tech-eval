@@ -84,6 +84,7 @@ class BakeryView  extends base {
 		let str;
 
 		let lineItems = singlePayload.breakdown || [];
+
 		if (lineItems.length === 0) {
 			str = `Unable to find a solution for product ${singlePayload.code} with ${singlePayload.numberOfItems} items, using current product pack sizes`;
 		} else {

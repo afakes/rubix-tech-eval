@@ -43,19 +43,30 @@ class BakeryTestsView extends base {
 		//console.log("this.config = ",this.config);
 
 		let testResult = {
-			"status":          "FAIL",
+			"status":          "",
 			"name":            this.config.description || "",
 			"type":            typeof this.config.stream,
 			"length":          JSON.stringify(this.config.stream).length,
 			"actualPayload":   JSON.stringify(this.src.payload),
 			"actualError":     JSON.stringify(this.src.error),
 			"expectedPayload": this.config.expected.payload,
-			"expectedError":   this.config.expected.error
+			"expectedError":   this.config.expected.error,
+			"actualHasSolution":   this.src.hasSolution,
+			"expectedHasSolution": this.config.expected.hasSolution
 		};
 
+		console.log("testResult = ",testResult);
+
+		console.log("testResult.actualPayload = ",testResult.actualPayload);
+
 		//
-		if (testResult.expectedPayload === testResult.actualPayload && testResult.expectedError === testResult.actualError) {
+		if (testResult.expectedPayload     === testResult.actualPayload &&
+			testResult.expectedError       === testResult.actualError &&
+			testResult.expectedHasSolution === testResult.actualHasSolution
+		) {
 			testResult.status = "PASS";
+		} else {
+			testResult.status = "FAIL";
 		}
 
 		this.output(`

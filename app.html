@@ -119,6 +119,14 @@
 					"error": `[{},{},{},{}]`
 				}
 			},
+			"no_solution": {
+				"description": "No Solution",
+				"stream": "7 CF",
+				"expected": {
+					"payload": `[]`,
+					"error": `[]`
+				}
+			},
 			"emptyArray": {
 				"description": "empty array",
 				"stream": [],
@@ -202,7 +210,7 @@
 					"expectedError":   this.config.expected.error
 				};
 
-				//
+				console.log("testResult = ",testResult);
 				if (testResult.expectedPayload === testResult.actualPayload && testResult.expectedError === testResult.actualError) {
 					testResult.status = "PASS";
 				}
