@@ -12,7 +12,7 @@
  - [requirements](https://github.com/afakes/rubix-tech-eval/blob/master/doc/bakery.pdf)
  - [core of the solution as code](https://github.com/afakes/rubix-tech-eval/blob/master/code/Bakery.class.js#L115)
  
-**hint**: _middle click, or right click "open in new tab", to keep this page accessible as you review
+**hint**: _middle click, or right click "open in new tab", to keep this page accessible as you review_
  
 ## Explanation of the bakery packing algorithm 
 The Bakery packing problem, belongs the bin-packing family of algorithms. i.e. "how to select the smallest number of; (baskets, bins, items) to fulfil the total requested items". The goal of a good bin-packing algorithm is to achieve a result within low-order polynomial time, I attempt to achieve this through sorting, and logical subsets. 
