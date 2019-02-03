@@ -55,7 +55,7 @@ To download the full code please clone the following repository on GitHUB
 
 #### 3.1.2 zip archive  
 To download the full code as a ZIP file, access the following URL
- - [http://datavi.co/rubix/AdamFakes_rubix-tech-eval.zip](http://datavi.co/rubix/AdamFakes_rubix-tech-eval.zip) 
+ - [https://github.com/afakes/rubix-tech-eval/archive/1.0.zip](https://github.com/afakes/rubix-tech-eval/archive/1.0.zip) 
 
 ### 3.2 execute code 
 
