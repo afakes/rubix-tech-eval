@@ -1,9 +1,8 @@
 
 # Bakery Tech Evaluation
-
- - Name: Adam Fakes
- - email: adam@datavi.co
- - phone: +61 (0)401-302-243 
+ - Name: **Adam Fakes**
+ - email: **adam@datavi.co**
+ - phone: **+61 (0)401-302-243** 
 
 ## Summary
  - it's a "bin-packing" problem
@@ -14,10 +13,10 @@
  
 **hint**: _middle click, or right click "open in new tab", to keep this page accessible as you review_
  
-## Explanation of the bakery packing algorithm 
+## 1. Explanation of the bakery packing algorithm 
 The Bakery packing problem, belongs the bin-packing family of algorithms. i.e. "how to select the smallest number of; (baskets, bins, items) to fulfil the total requested items". The goal of a good bin-packing algorithm is to achieve a result within low-order polynomial time, I attempt to achieve this through sorting, and logical subsets. 
 
-### My Solution
+### 2. My Solution
 If we accept that the number of pack configurations will be finite then we know the number of solutions, must be either finite, or unsolvable, this led me to think of it as a tree, with branches for calculation and nodes for decisions.
    
  1. The root node contains the original value 'requested number of items', 
@@ -31,7 +30,7 @@ If we accept that the number of pack configurations will be finite then we know 
 ![visual representation of algorithm](doc/images/diagrams.jpg?raw=true "visual representation of algorithm")
 Figure 1: an example of allocating 14 muffins, using the Bakery packing algorithm.
 
-#### Pseudo code
+#### 2.1 Pseudo code
 
   - **input**: _numberOfItems_
   - sort pack sizes for the item type in descending order 
@@ -45,50 +44,59 @@ Figure 1: an example of allocating 14 muffins, using the Bakery packing algorith
   - **output**: | pack of size | (count of packs of a certain size)
 
 
-## Steps to compile and run the code  
+## 3 Steps to compile and run the code  
 
-### online execution
-To access and online version of the code access the following URL
- - URL: http://datavi.co/rubix/app.html 
+### 3.1 download code
 
-### code - via GitHUB
+#### 3.1.1 via GitHUB
 To download the full code please clone the following repository on GitHUB 
  - `git clone https://github.com/afakes/rubix-tech-eval` 
 
-### zip archive  
+#### 3.1.2 zip archive  
 To download the full code as a ZIP file, access the following URL
- - http://datavi.co/rubix/AdamFakes_rubix-tech-eval.zip 
+ - [http://datavi.co/rubix/AdamFakes_rubix-tech-eval.zip](http://datavi.co/rubix/AdamFakes_rubix-tech-eval.zip) 
 
- 
-#### run code
+### 3.2 execute code 
+
+#### 3.2.1 online 
+To access and online version of the code access the following URL
+ - URL: [http://datavi.co/rubix/app.html](http://datavi.co/rubix/app.html) 
+
+#### 3.2.2 locally 
+ - `git clone https://github.com/afakes/rubix-tech-eval`
  - `cd rubix-tech-eval`
  - `google-chrome app.html`  (assuming UNIX command line, with Google Chrome installed)
  
-#### run tests
- - `cd rubix-tech-eval/code`
- - `google-chrome tests.html`  (assuming UNIX command line, with Google Chrome installed)
 
+## 4. Tests 
  
-
-## Test cases of the code
- 
- - PASS - working solution with array input
+### 4.1 test cases 
+ - PASS - working solution with array input 
  - PASS - working solution with string input
  - PASS - invalid input with number input
- - PASS - random working and invalid	lines
+ - PASS - random working and invalid lines
  - PASS - empty array
  - PASS - null input
  - PASS - no solution
  - PASS - empty string
 
-Test execution is available at: http://datavi.co/rubix/code/tests.html 
+### 4.2 test execution
+
+#### 4.2.1 online
+ - Test execution is available at: [http://datavi.co/rubix/code/tests.html](http://datavi.co/rubix/code/tests.html) 
+
+#### 4.2.1 locally
+ - `cd rubix-tech-eval/code`
+ - `git clone https://github.com/afakes/rubix-tech-eval`
+ - `cd rubix-tech-eval`
+ - `google-chrome tests.html`  (assuming UNIX command line, with Google Chrome installed)
 
 
-## Data 
+## 5. Data 
 The data format, structure and order are important. Here I have restructured the data to allow for efficient access.  
 By denormalising the item code and name, we can save on storage space, search time, and indexing (depending on the backend storage solution) 
  
-### Original 
+### 5.1 Original 
 
 |  Name                | Code | Packs      |
 | -------------------- | ---- | ---------- | 
@@ -104,7 +112,7 @@ By denormalising the item code and name, we can save on storage space, search ti
 |                      |      | 9 @ $16.99 | 
 |                      |      |            |
 
-### table format 
+### 5.2 table format 
 
 | key   |  Name                | Code | pack_size  | price |
 | ----- | -------------------- | ---- | ---------- | ----- | 
@@ -118,6 +126,7 @@ By denormalising the item code and name, we can save on storage space, search ti
 | CF_9  | Croissant            | CF   | 9          | 16.99 | 
 
 
+### 5.3 JSON format
 ```json
 {
     "name": {
@@ -145,18 +154,17 @@ By denormalising the item code and name, we can save on storage space, search ti
 ```
 
 
-## Decisions & Assumptions
 
+## 6. Decisions & Assumptions
 
-### Assumptions
+### 6.1 Assumptions
  - only solutions that provide whole number matching pack sizes will be accepted
 
-### No Solution
+### 6.2 No Solution
 If there was not complete solution, i.e. the number of request items could not be packed with the pack size configurations supplied, then the request was marked with "No Solution".
  - A solution this issue could be: increasingly add 1 to the number of items request until we find a solution, of course this would increase the cost price etc. leading to a new search domain, "what is the lowest cost for extra items ... "
 
-
-### Language
+### 6.3 Language selection
 _**ECMAScript6** (aka ES6, JavaScript, or NodeJS)_
 
 For this test I have chosen to use ECMAScript6 (ES6) / HTML / CSS. A few of the factors that led to this decision; 
@@ -165,7 +173,7 @@ For this test I have chosen to use ECMAScript6 (ES6) / HTML / CSS. A few of the 
  - Debugging within the browser is straight forward, with the JS console  
 
 
-## Files
+## 7. Files structure & description
 ```text
 ├── app.html                       - compiled version of code 
 ├── code
@@ -187,6 +195,7 @@ For this test I have chosen to use ECMAScript6 (ES6) / HTML / CSS. A few of the 
 
 
 ## references: 
+ - Crockford, D. (2006) The application/json Media Type for JavaScript Object Notation (JSON), accessed online 2019-02-03 http://www.rfc-editor.org/info/rfc4627 
  - Friesen, D. K.  (1986) Variable Sized Bin Packing  SIAM Journal on Computing 15:1, 222-230 
- - JOHNSON, S. (1967) NEAR-OPTIMAL BIN PACKING ALGORITHMS, Massachusetts Institute of Technology PhD Thesis access online 2019-02-03 https://dspace.mit.edu/bitstream/handle/1721.1/57819/17595570-MIT.pdf?sequence=2
+ - JOHNSON, S. (1967) NEAR-OPTIMAL BIN PACKING ALGORITHMS, Massachusetts Institute of Technology PhD Thesis, accessed online 2019-02-03 https://dspace.mit.edu/bitstream/handle/1721.1/57819/17595570-MIT.pdf?sequence=2
 
